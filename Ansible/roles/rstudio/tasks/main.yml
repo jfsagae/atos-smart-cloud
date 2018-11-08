@@ -1,0 +1,27 @@
+---
+# tasks file for rstudio
+- name: '1. Cria diretorio para o R Studio'
+  tags: rstudio_path
+  file: 
+     path: "{{ rstudio_path }}"
+     state: directory
+#  
+#- name: '2. Download do R Studio' 
+#  get_url:
+#     url: "{{ rstudio_url }}" 
+#     dest: "{{ rstudio_path }}"
+#  register: rstudio_result
+
+#- debug: 
+#    var: rstudio_result
+
+
+- name: 3. Install R Studio
+  yum:
+    name: "{{ rstudio_url }}"
+    state: present
+  register: result
+  until: 'result.rc == 0'
+  retries: 5
+  delay: 10
+  #when: not rstudio_result.stat.exists
